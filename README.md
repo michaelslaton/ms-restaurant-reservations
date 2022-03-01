@@ -398,3 +398,18 @@ so that reservations are accurate and current.
    - Clicking "Cancel" makes no changes, then display the previous page.
 
 > **Hint** The same validation used for create applies to editing a reservation. The form and the API for updating a reservation must not allow the user to violate any of the rules specified when creating a reservation.
+
+
+The name of your application at the top of the file
+
+A link to your live application
+
+Documentation of your API
+
+Screenshots of your application; this makes your application description much easier to understand
+
+A summary section that concisely explains what your application does; try to frame this from the standpoint of what the user does or how the application benefits the user
+
+A section on the technology used
+
+Installation instructions
