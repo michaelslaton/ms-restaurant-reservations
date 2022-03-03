@@ -1,21 +1,23 @@
-# CREATE THE REPO
-heroku create backendName
-heroku create frontendName -b https://github.com/mars/create-react-app-buildpack.git
+# CREATE THE PROJECT ON HEROKU
+
+heroku create <MY_PROJECT_NAME-backend>
+heroku create <MY_PROJECT_NAME-frontend> -b https://github.com/mars/create-react-app-buildpack.git
 
 # Add the git paths to remote
-git remote add <REMOTE-FRONTEND-NAME> <GIT-URL>
-git remote add <REMOTE-BACKEND-NAME> <GIT-URL>
+git remote add <NAME-OF-REMOTE-backend> <INSERT-GIT-URL-HERE>
+git remote add <NAME-OF-REMOTE-frontend> <INSERT-GIT-URL-HERE>
 
-# Check that the remote is here
-git remote 
+# Check that the remote is there
+git remote
 
-# Add environment variables to Heroku
+# ADD ENVIRONMENT VARIABLES
+Go to heroku settings -> "Config Vars" -> add DATABASE_URL to backend/REACT_APP_API_BASE_URL to frontend
 
-# Push to heroku
+# Push to Heroku
 git add .
-git commit -m "message"
-git subtree push --prefix <FOLDER-NAME> <REMOTE-FRONTEND-NAME> main
-git subtree push --prefix <FOLDER-NAME> <REMOTE-BACKEND-NAME> main
+git commit -m "first commit"
+git subtree push --prefix <NAME-OF-FOLDER> <NAME-OF-REMOTE-backend> main
+git subtree push --prefix <NAME-OF-FOLDER> <NAME-OF-REMOTE-frontend> main
 
 https://git.heroku.com/ms-finalcap-backend.git
 https://git.heroku.com/ms-finalcap-frontend.git
