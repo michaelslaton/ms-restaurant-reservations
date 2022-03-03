@@ -1,3 +1,4 @@
+console.log("Test file started")
 const puppeteer = require("puppeteer");
 const { setDefaultOptions } = require('expect-puppeteer');
 const fs = require("fs");
@@ -15,12 +16,14 @@ describe("US-01 - Create and list reservations - E2E", () => {
   let browser;
 
   beforeAll(async () => {
+    console.log("Launching puppeteer")
     await fsPromises.mkdir("./.screenshots", { recursive: true });
     setDefaultOptions({ timeout: 1000 });
     browser = await puppeteer.launch();
   });
 
   beforeEach(async () => {
+    console.log("before each")
     page = await browser.newPage();
     page.on("console", onPageConsole);
     await page.setViewport({ width: 1920, height: 1080 });
@@ -33,6 +36,7 @@ describe("US-01 - Create and list reservations - E2E", () => {
 
   describe("/reservations/new page", () => {
     test("filling and submitting form creates a new reservation and then displays the dashboard for the reservation date", async () => {
+      console.log("first test")
       const lastName = Date.now().toString(10);
 
       await page.type("input[name=first_name]", "James");

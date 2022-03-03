@@ -34,6 +34,7 @@ async function validateFields(req, res, next) {
       message: `people is not a number`,
     });
   }
+  console.log(data);
 
   requiredFields.map((field) => {
     if (!data[field]) {
