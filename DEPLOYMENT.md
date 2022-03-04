@@ -11,7 +11,8 @@ git remote add <NAME-OF-REMOTE-frontend> <INSERT-GIT-URL-HERE>
 git remote
 
 # ADD ENVIRONMENT VARIABLES
-Go to heroku settings -> "Config Vars" -> add DATABASE_URL to backend/REACT_APP_API_BASE_URL to frontend
+Go to heroku settings -> "Config Vars" -> add DATABASE_URL to backend
+REACT_APP_API_BASE_URL to frontend
 
 # Push to Heroku
 git add .
