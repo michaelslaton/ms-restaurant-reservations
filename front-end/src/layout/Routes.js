@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import { Redirect, Route, Switch } from "react-router-dom";
 import Dashboard from "../dashboard/Dashboard";
 import NewReservation from "../dashboard/NewReservation";
@@ -15,6 +15,7 @@ function useQuery() {
 }
 
 export default function Routes() {
+  const [tables, setTables] = useState([]);
   const query = useQuery();
   let date = query.get("date");
 
@@ -34,7 +35,7 @@ export default function Routes() {
       </Route>
       
       <Route exact={true} path="/reservations/:reservationId/seat">
-        <Seat />
+        <Seat tables={tables} setTables={setTables} />
       </Route>
 
       <Route exact={true} path="/tables/new">
@@ -42,7 +43,7 @@ export default function Routes() {
       </Route>
 
       <Route path="/dashboard">
-        <Dashboard date={date ? date : today()} />
+        <Dashboard tables={tables} setTables={setTables} date={date ? date : today()} />
       </Route>
 
       <Route>

@@ -5,33 +5,29 @@ import ErrorAlert from "../layout/ErrorAlert";
 import { useParams, useHistory } from "react-router-dom";
 import { Container, Button, Row, Col } from "react-bootstrap";
 
-export default function Seat(){
+export default function Seat({ tables ,setTables }){
   const initialFormState = {
     reservation_id: "",
     table_id: "",
   };
   const [formData, setFormData] = useState({ ...initialFormState });
   const [reservation, setReservation] = useState({});
-  const [tables, setTables] = useState([]);
   const [reservationsError, setReservationsError] = useState(null);
   const { reservationId } = useParams();
   const url = process.env.REACT_APP_API_BASE_URL;
   const history = useHistory();
 
-  useEffect(loadData, [reservationId, url]);
+  useEffect(loadData, [reservationId, setTables, url]);
 
   function loadData() {
     const abortController = new AbortController();
     setReservationsError(null);
-
     readReservation(reservationId, abortController.signal)
       .then((response)=>setReservation(response))
       .catch(setReservationsError);
-
     listTables(abortController.signal)
     .then((response)=> setTables(response))
     .catch((error)=> setReservationsError(error));
-
     return () => abortController.abort();
   }
 
@@ -39,12 +35,11 @@ export default function Seat(){
     event.preventDefault();
     const abortController = new AbortController();
     try {
-      await seatReservation(formData.table_id,{ data: { reservation_id: reservation.reservation_id} }, abortController.signal);
+      await seatReservation(formData.table_id,{ data: { reservation_id: reservation.reservation_id } }, abortController.signal);
       history.push(`/dashboard`)
     } catch (error) {
       setReservationsError(error)
     }
-    
     return () => abortController.abort();
   }
 
@@ -81,7 +76,7 @@ export default function Seat(){
       </form>
       </Row>
       <Row>
-      <TablesList setReservationsError={setReservationsError} />
+      <TablesList tables={tables} setTables={setTables} setReservationsError={setReservationsError} />
       </Row>
     </Container>
   );
