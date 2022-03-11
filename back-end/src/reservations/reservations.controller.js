@@ -137,9 +137,9 @@ function validateFields(req, res, next) {
 // ----------------------------------------------------------------- Functionality
 
 async function create(req, res, next) {
-  const { data = {} } = req.body;
-  const newData = await service.create(data);
-  res.status(201).json({ data: newData });
+  const newReservation = req.body.data;
+  const data = await service.create(newReservation);
+  res.status(201).json({ data });
 }
 
 async function list(req, res) {
@@ -155,7 +155,14 @@ async function list(req, res) {
   return res.json({ data });
 }
 
+async function read(req,res){
+  const params = req.params.reservationId
+  const data = await service.read(params);
+  return res.json({ data });
+}
+
 module.exports = {
   create: [validateDate, validateTime, asyncErrorBoundary(validateFields), asyncErrorBoundary(create)],
   list: [asyncErrorBoundary(list)],
+  read: [asyncErrorBoundary(read)],
 };
