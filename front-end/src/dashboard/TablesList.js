@@ -1,18 +1,31 @@
-import React, { useEffect, useState } from "react";
-import { listTables } from "../utils/api";
-import { Table } from "react-bootstrap";
+import React, { useEffect } from "react";
+import { listTables, finishTable } from "../utils/api";
+import { Table, Button } from "react-bootstrap";
 
-export default function TablesList({ setReservationsError }) {
-  const [tables, setTables] = useState([]);
+export default function TablesList({ setReservationsError, tables, setTables }) {
 
-  useEffect(loadDashboard, [setReservationsError]);
+  useEffect(loadData, [setReservationsError, setTables]);
   
-  function loadDashboard() {
+  function loadData() {
     const abortController = new AbortController();
     listTables(abortController.signal)
       .then((response)=> setTables(response))
       .catch((error)=> setReservationsError(error));
     return () => abortController.abort();
+  }
+
+  async function handleFinish(tableId){
+    const abortController = new AbortController();
+    if(window.confirm("Is this table ready to seat new guests? This cannot be undone.")){
+    try{
+      await finishTable(tableId, abortController.signal);
+      loadData();
+    } catch (error) {
+      setReservationsError(error)
+    }
+    return () => abortController.abort();
+    }
+    return
   }
 
   return (
@@ -23,6 +36,7 @@ export default function TablesList({ setReservationsError }) {
           <th>TABLE NAME</th>
           <th>CAPACITY</th>
           <th>Free?</th>
+          <th></th>
         </tr>
       </thead>
       <tbody>
@@ -34,6 +48,16 @@ export default function TablesList({ setReservationsError }) {
               <td>{table.capacity}</td>
               <td data-table-id-status={table.table_id}>
                 {table.reservation_id === null ? "Free" : "Occupied"}
+              </td>
+              <td>
+                {table.reservation_id !== null && (
+                  <Button
+                    data-table-id-finish={table.table_id}
+                    onClick={() => handleFinish(table.table_id)}
+                    size="sm">
+                    Finish
+                  </Button>
+                )}
               </td>
             </tr>
           );

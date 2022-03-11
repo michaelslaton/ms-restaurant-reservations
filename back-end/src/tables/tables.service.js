@@ -3,7 +3,6 @@ const knex = require("../db/connection");
 const dataBase = "tables";
 
 function create(newTable) {
-  console.log("New Table: ", newTable)
   return knex(dataBase)
     .insert(newTable)
     .returning("*")
@@ -37,16 +36,14 @@ function listSpecific(reservation_date){
 
 function seat(table_id,reservation_id){
   if(reservation_id){
-    console.log("True")
     return knex(dataBase)
     .where({ table_id })
     .update({ reservation_id });
 
   } else {
-    console.log("False")
     return knex(dataBase)
     .where({ table_id })
-    .update({ status: false });
+    .update({ reservation_id: null  });
 
   }
 }

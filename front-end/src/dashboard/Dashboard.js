@@ -6,7 +6,7 @@ import { useHistory } from "react-router-dom";
 import { previous, next, today } from "../utils/date-time";
 import { Container, Button, Table, Row, Col } from "react-bootstrap";
 
-function Dashboard({ date }) {
+function Dashboard({ date, tables, setTables }) {
   const [reservations, setReservations] = useState([]);
   const [reservationsError, setReservationsError] = useState(null);
   const history = useHistory();
@@ -76,7 +76,7 @@ function Dashboard({ date }) {
             </Table>
           </Col>
           <Col>
-          <TablesList setReservationsError={setReservationsError}/>
+          <TablesList tables={tables} setTables={setTables} setReservationsError={setReservationsError}/>
           </Col>
         </Row>
       </Container>

@@ -1,6 +1,21 @@
 const service = require("./tables.service");
 const asyncErrorBoundary = require("../errors/asyncErrorBoundary");
 
+// ----------------------------------------------------------------- ID Validation
+
+//Table tableId exists
+async function validateId(req,res,next){
+  const tableId = req.params.tableId
+  const foundTable = await service.readTable(tableId);
+  if(!foundTable){
+    return next({
+      status: 404,
+      message: `Table ${tableId} not found.`,
+    })
+  }
+  next();
+}
+
 // ----------------------------------------------------------------- Capacity Validation
 
 async function validateCapacity(req, res, next){
@@ -28,6 +43,18 @@ async function validateCapacity(req, res, next){
     return next({
       status: 400,
       message: `Party size is over table capacity.`,
+    })
+  }
+  next();
+}
+
+async function isOccupied(req,res,next){
+  const tableId = req.params.tableId
+  const foundTable = await service.readTable(tableId);
+  if(!foundTable.reservation_id){
+    return next({
+      status: 400,
+      message: `Table ${tableId} is not occupied.`,
     })
   }
   next();
@@ -112,13 +139,20 @@ async function list(req, res) {
 
 async function updateSeat(req, res) {
   const body = req.body.data;
-  const tableId = req.params.tableId
+  const tableId = req.params.tableId;
   const data = await service.seat(tableId,body.reservation_id);
   return res.status(200).json({ data });
+}
+
+async function unSeat(req, res){
+  const tableId = req.params.tableId;
+  await service.seat(tableId);
+  return res.status(200).json({});
 }
 
 module.exports = {
   list: [asyncErrorBoundary(list)],
   update: [validateFields(requiredFieldsSeat), validateCapacity, asyncErrorBoundary(updateSeat)],
   create: [validateFields(requiredFieldsTable), validateFieldLengths, asyncErrorBoundary(create)],
+  unSeat: [validateId, isOccupied, asyncErrorBoundary(unSeat)],
 }
