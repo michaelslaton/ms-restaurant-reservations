@@ -6,10 +6,12 @@ import { useParams, useHistory } from "react-router-dom";
 import { Container, Button, Row, Col } from "react-bootstrap";
 
 export default function Seat({ tables ,setTables }){
+
   const initialFormState = {
     reservation_id: "",
     table_id: "",
   };
+  
   const [formData, setFormData] = useState({ ...initialFormState });
   const [reservation, setReservation] = useState({});
   const [reservationsError, setReservationsError] = useState(null);
