@@ -1,6 +1,53 @@
 const service = require("./reservations.service");
 const asyncErrorBoundary = require("../errors/asyncErrorBoundary");
 
+// ----------------------------------------------------------------- Status Validation
+
+const acceptedStatus = [
+  "finished",
+  "booked",
+  "seated"
+]
+
+function validateStatus(req,res, next){
+  const status = req.body.data.status
+  const foundReservation = res.locals.foundReservation
+  // if(!status){}
+
+  if(!acceptedStatus.includes(status)){
+    return next({
+      status: 400,
+      message: `Status '${status}' is not a valid status type.`,
+    })
+  }
+
+  if(foundReservation.status === "finished"){
+    return next({
+      status: 400,
+      message: `Reservation ${foundReservation.reservation_id} is finished.`,
+    })
+  }
+
+  next();
+}
+
+// ----------------------------------------------------------------- Id Validation
+
+async function validateId(req,res,next){
+  const reservationId = req.params.reservationId;
+  const foundReservation = await service.read(reservationId);
+
+  if(!foundReservation){
+    return next({
+      status: 404,
+      message: `Reservation ${reservationId} not found.`,
+    })
+  } else {
+    res.locals.foundReservation = foundReservation;
+  }
+  next();
+}
+
 // ----------------------------------------------------------------- Time Validation
 
 function currentTime() {
@@ -11,7 +58,7 @@ function currentTime() {
 
 function validateTime(req,res,next){
   const resTime = req.body.data.reservation_time;
-
+  
   const theirTime = resTime.split(":").map((value)=>value = parseInt(value));
 
   const myTime = currentTime()
@@ -22,7 +69,7 @@ function validateTime(req,res,next){
   }
 
   if(theirTime[0] <= 10){
-    if(theirTime[1] < 30){ return next({
+    if(theirTime[1] <= 30){ return next({
       status: 400,
       message: `No reservations can be made before we open at 10:30AM.`,
     }) }
@@ -98,7 +145,14 @@ const requiredFields = [
 ];
 
 function validateFields(req, res, next) {
-  const { data = {} } = req.body;
+  const data = req.body.data;
+
+  if(!data){
+    return next({
+      status: 400,
+      message: `No data received.`,
+    });
+  }
 
   if (data["reservation_date"] && !data["reservation_date"].match(/\d{4}-\d{2}-\d{2}/g)) {
     return next({
@@ -131,6 +185,14 @@ function validateFields(req, res, next) {
     }
   });
 
+  // Status can only be booked for post
+  if(data.status === "seated" || data.status === "finished"){
+    return next({
+      status: 400,
+      message: `A reservation status must be 'booked' before being '${data.status}'`,
+    });
+  }
+
   next();
 }
 
@@ -161,8 +223,17 @@ async function read(req,res){
   return res.json({ data });
 }
 
+async function statusChange(req,res){
+  const reservationId = req.params.reservationId
+  const newStatus = req.body.data.status
+  const data = await service.updateStatus(reservationId, newStatus)
+  
+  return res.status(200).json({ data: { status: newStatus } });
+}
+
 module.exports = {
-  create: [validateDate, validateTime, asyncErrorBoundary(validateFields), asyncErrorBoundary(create)],
+  create: [validateFields, validateDate, validateTime, asyncErrorBoundary(create)],
   list: [asyncErrorBoundary(list)],
-  read: [asyncErrorBoundary(read)],
+  read: [asyncErrorBoundary(validateId), asyncErrorBoundary(read)],
+  update: [asyncErrorBoundary(validateId), validateStatus, asyncErrorBoundary(statusChange)]
 };
