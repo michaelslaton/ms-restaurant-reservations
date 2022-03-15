@@ -1,8 +1,8 @@
 import React, { useEffect } from "react";
-import { listTables, finishTable } from "../utils/api";
+import { listTables, finishTable, changeReservationStatus } from "../utils/api";
 import { Table, Button } from "react-bootstrap";
 
-export default function TablesList({ setReservationsError, tables, setTables }) {
+export default function TablesList({ setReservationsError, tables, setTables, loadDashboard }) {
 
   useEffect(loadData, [setReservationsError, setTables]);
   
@@ -14,18 +14,23 @@ export default function TablesList({ setReservationsError, tables, setTables }) 
     return () => abortController.abort();
   }
 
-  async function handleFinish(tableId){
+  async function handleFinish(tableId, reservationId) {
     const abortController = new AbortController();
-    if(window.confirm("Is this table ready to seat new guests? This cannot be undone.")){
-    try{
-      await finishTable(tableId, abortController.signal);
-      loadData();
-    } catch (error) {
-      setReservationsError(error)
+    if (window.confirm("Is this table ready to seat new guests? This cannot be undone.")) {
+
+      try {
+        await finishTable(tableId, abortController.signal);
+        // await changeReservationStatus(reservationId,{ data: { status: "finished" } }, abortController.signal)
+        loadData();
+        loadDashboard();
+      } catch (error) {
+        setReservationsError(error);
+      }
+
+      return () => abortController.abort();
     }
-    return () => abortController.abort();
-    }
-    return
+
+    return;
   }
 
   return (
@@ -53,7 +58,7 @@ export default function TablesList({ setReservationsError, tables, setTables }) 
                 {table.reservation_id !== null && (
                   <Button
                     data-table-id-finish={table.table_id}
-                    onClick={() => handleFinish(table.table_id)}
+                    onClick={() => handleFinish(table.table_id, table.reservation_id)}
                     size="sm">
                     Finish
                   </Button>

@@ -67,8 +67,13 @@ function Dashboard({ date, tables, setTables }) {
                       <td>{reservation.reservation_date}</td>
                       <td>{reservation.reservation_time}</td>
                       <td>{reservation.people}</td>
-                      <td>{reservation.status}</td>
-                      <td><a className="btn btn-primary" href={`/reservations/${reservation.reservation_id}/seat`} size="sm">Seat</a></td>
+                      <td data-reservation-id-status={reservation.reservation_id}>{reservation.status}</td>
+                      <td></td>
+                      <td>
+                        {reservation.status === "booked" && (
+                          <a className="btn btn-primary" href={`/reservations/${reservation.reservation_id}/seat`} size="sm">Seat</a>
+                        )}
+                      </td>
                     </tr>
                   );
                 })}
@@ -76,7 +81,7 @@ function Dashboard({ date, tables, setTables }) {
             </Table>
           </Col>
           <Col>
-          <TablesList tables={tables} setTables={setTables} setReservationsError={setReservationsError}/>
+          <TablesList tables={tables} setTables={setTables} setReservationsError={setReservationsError} loadDashboard={loadDashboard}/>
           </Col>
         </Row>
       </Container>
