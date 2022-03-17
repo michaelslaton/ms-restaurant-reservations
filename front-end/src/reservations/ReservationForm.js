@@ -46,6 +46,7 @@ export default function ReservationForm({
           id="mobile_number"
           name="mobile_number"
           onChange={change}
+          maxLength="10"
           value={mobile_number}
           required
         />

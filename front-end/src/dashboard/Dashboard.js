@@ -1,7 +1,8 @@
 import React, { useEffect, useState } from "react";
 import { listReservations } from "../utils/api";
-import TablesList from "./TablesList"
+import TablesList from "../tables/TablesList"
 import ErrorAlert from "../layout/ErrorAlert";
+import ReservationsList from "../reservations/ReservationsList"
 import { useHistory } from "react-router-dom";
 import { previous, next, today } from "../utils/date-time";
 import { Container, Button, Table, Row, Col } from "react-bootstrap";
@@ -44,41 +45,7 @@ function Dashboard({ date, tables, setTables }) {
               <Button className="mx-1" name="next" onClick={clickHandler}>Next</Button>
             </div>
             <ErrorAlert error={reservationsError} />
-            <Table responsive striped size="sm">
-              <thead>
-                <tr>
-                  <th>#</th>
-                  <th>NAME</th>
-                  <th>PHONE</th>
-                  <th>DATE</th>
-                  <th>TIME</th>
-                  <th>PEOPLE</th>
-                  <th>STATUS</th>
-                  <th></th>
-                </tr>
-              </thead>
-              <tbody>
-                {reservations.map((reservation,index) => {
-                  return (
-                    <tr key={reservation.reservation_id}>
-                      <td>{index + 1}</td>
-                      <td>{`${reservation.first_name} ${reservation.last_name}`}</td>
-                      <td>{reservation.mobile_number}</td>
-                      <td>{reservation.reservation_date}</td>
-                      <td>{reservation.reservation_time}</td>
-                      <td>{reservation.people}</td>
-                      <td data-reservation-id-status={reservation.reservation_id}>{reservation.status}</td>
-                      <td></td>
-                      <td>
-                        {reservation.status === "booked" && (
-                          <a className="btn btn-primary" href={`/reservations/${reservation.reservation_id}/seat`} size="sm">Seat</a>
-                        )}
-                      </td>
-                    </tr>
-                  );
-                })}
-              </tbody>
-            </Table>
+            <ReservationsList data={reservations}/>
           </Col>
           <Col>
           <TablesList tables={tables} setTables={setTables} setReservationsError={setReservationsError} loadDashboard={loadDashboard}/>

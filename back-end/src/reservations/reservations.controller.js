@@ -205,11 +205,17 @@ async function create(req, res, next) {
 }
 
 async function list(req, res) {
-  const params = req.query.date;
+  const date = req.query.date;
+  const mobileNumber = req.query.mobile_number;
   let data = {};
 
-  if (params) {
-    data = await service.listSpecificDate(params);
+  if (date) {
+    data = await service.listSpecificDate(date);
+    return res.json({ data });
+  }
+
+  if (mobileNumber){
+    data = await service.search(mobileNumber);
     return res.json({ data });
   }
 
@@ -226,14 +232,22 @@ async function read(req,res){
 async function statusChange(req,res){
   const reservationId = req.params.reservationId
   const newStatus = req.body.data.status
-  const data = await service.updateStatus(reservationId, newStatus)
-  
+  await service.updateStatus(reservationId, newStatus)
   return res.status(200).json({ data: { status: newStatus } });
+}
+
+async function update(req,res){
+  const reservationId = req.params.reservationId
+  const updatedReservation = req.body.data
+  const data = await service.update(reservationId, updatedReservation)
+
+  return res.status(200).json({ data });
 }
 
 module.exports = {
   create: [validateFields, validateDate, validateTime, asyncErrorBoundary(create)],
   list: [asyncErrorBoundary(list)],
   read: [asyncErrorBoundary(validateId), asyncErrorBoundary(read)],
-  update: [asyncErrorBoundary(validateId), validateStatus, asyncErrorBoundary(statusChange)]
+  updateStatus: [asyncErrorBoundary(validateId), validateStatus, asyncErrorBoundary(statusChange)],
+  update: [asyncErrorBoundary(validateId), validateFields, validateDate, validateTime, asyncErrorBoundary(update)]
 };
