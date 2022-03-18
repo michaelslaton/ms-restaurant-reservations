@@ -58,7 +58,6 @@ async function validateCapacity(req, res, next){
   }
 
   if(foundReservation.people > foundTable.capacity){ // If the table can fit the party size
-    console.log("validation: error")
     return next({
       status: 400,
       message: `Party size is over table capacity.`,
