@@ -6,7 +6,7 @@ function create(reservation) {
   return knex(database)
     .insert(reservation)
     .returning("*")
-    .then((reservation) => reservation[0]);
+    .then((data) => data[0]);
 }
 
 function listSpecificDate(reservation_date){
@@ -15,15 +15,6 @@ function listSpecificDate(reservation_date){
   .where({ reservation_date })
   .whereNotIn("status", ["finished", "canceled"])
   .orderBy("reservation_time")
-}
-
-function search(mobile_number) {
-  return knex(database)
-    .whereRaw(
-      "translate(mobile_number, '() -', '') like ?",
-      `%${mobile_number.replace(/\D/g, "")}%`
-    )
-    .orderBy("reservation_date");
 }
 
 function list(){
@@ -40,6 +31,15 @@ function read(reservation_id){
   .first();
 }
 
+function search(mobile_number) {
+  return knex(database)
+    .whereRaw(
+      "translate(mobile_number, '() -', '') like ?",
+      `%${mobile_number.replace(/\D/g, "")}%`
+    )
+    .orderBy("reservation_date");
+}
+
 function updateStatus(reservation_id, status){
   return knex(database)
     .where({ reservation_id })
@@ -50,7 +50,9 @@ function updateStatus(reservation_id, status){
 function update(reservation_id, updatedReservation){
   return knex(database)
     .where({ reservation_id })
-    .update(updatedReservation, "*")
+    .update(updatedReservation)
+    .returning("*")
+    .then((data)=> data[0])
 }
 
 module.exports = {

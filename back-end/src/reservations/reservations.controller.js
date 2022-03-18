@@ -6,34 +6,35 @@ const asyncErrorBoundary = require("../errors/asyncErrorBoundary");
 const acceptedStatus = [
   "finished",
   "booked",
-  "seated"
+  "seated",
+  "cancelled"
 ]
 
 function validateStatus(req,res, next){
-  const status = req.body.data.status
-  const foundReservation = res.locals.foundReservation
-  // if(!status){}
+  const status = req.body.data.status;
+  const foundReservation = res.locals.foundReservation;
 
-  if(!acceptedStatus.includes(status)){
+  if(!acceptedStatus.includes(status)){ // Is an accepted status
     return next({
       status: 400,
       message: `Status '${status}' is not a valid status type.`,
     })
   }
 
-  if(foundReservation.status === "finished"){
+  if(foundReservation.status === "finished"){ // Is finished. Finished status cannot be edited.
     return next({
       status: 400,
       message: `Reservation ${foundReservation.reservation_id} is finished.`,
     })
   }
 
+  res.locals.newStatus = status;
   next();
 }
 
 // ----------------------------------------------------------------- Id Validation
 
-async function validateId(req,res,next){
+async function validateId(req,res,next){ 
   const reservationId = req.params.reservationId;
   const foundReservation = await service.read(reservationId);
 
@@ -42,9 +43,10 @@ async function validateId(req,res,next){
       status: 404,
       message: `Reservation ${reservationId} not found.`,
     })
-  } else {
-    res.locals.foundReservation = foundReservation;
   }
+  
+  res.locals.foundReservation = foundReservation;
+  res.locals.reservationId = reservationId;
   next();
 }
 
@@ -57,7 +59,7 @@ function currentTime() {
 }
 
 function validateTime(req,res,next){
-  const resTime = req.body.data.reservation_time;
+  const resTime = res.locals.data.reservation_time;
   
   const theirTime = resTime.split(":").map((value)=>value = parseInt(value));
 
@@ -111,7 +113,8 @@ function aDate(year,month,day){ // returns the value of the day integer value 0-
 }
 
 function validateDate(req, res, next){ // validates the date is in the future and not a tuesday
-  const resDate = req.body.data.reservation_date;
+  const resDate = res.locals.data.reservation_date
+
   const theirDate = resDate.split("-").map((value)=>value = parseInt(value));
   const myDate = currentDate();
 
@@ -192,14 +195,14 @@ function validateFields(req, res, next) {
       message: `A reservation status must be 'booked' before being '${data.status}'`,
     });
   }
-
+  res.locals.data = data;
   next();
 }
 
 // ----------------------------------------------------------------- Functionality
 
 async function create(req, res, next) {
-  const newReservation = req.body.data;
+  const newReservation = res.locals.data;
   const data = await service.create(newReservation);
   res.status(201).json({ data });
 }
@@ -224,23 +227,22 @@ async function list(req, res) {
 }
 
 async function read(req,res){
-  const params = req.params.reservationId
+  const params = res.locals.reservationId;
   const data = await service.read(params);
   return res.json({ data });
 }
 
 async function statusChange(req,res){
-  const reservationId = req.params.reservationId
-  const newStatus = req.body.data.status
+  const reservationId = res.locals.reservationId
+  const newStatus = res.locals.newStatus
   await service.updateStatus(reservationId, newStatus)
   return res.status(200).json({ data: { status: newStatus } });
 }
 
 async function update(req,res){
-  const reservationId = req.params.reservationId
-  const updatedReservation = req.body.data
-  const data = await service.update(reservationId, updatedReservation)
-
+  const reservationId = res.locals.reservationId;
+  const updatedReservation = res.locals.data;
+  const data = await service.update(reservationId, updatedReservation);
   return res.status(200).json({ data });
 }
 

@@ -2,6 +2,7 @@ import React, { useState } from "react";
 import { Redirect, Route, Switch } from "react-router-dom";
 import Dashboard from "../dashboard/Dashboard";
 import NewReservation from "../reservations/NewReservation";
+import EditReservation from "../reservations/EditReservation";
 import Seat from "../tables/Seat";
 import Search from "../search/Search.js"
 import NewTable from "../tables/NewTable";
@@ -22,7 +23,6 @@ export default function Routes() {
 
   return (
     <Switch>
-      
       <Route exact={true} path="/">
         <Redirect to={"/dashboard"} />
       </Route>
@@ -34,9 +34,13 @@ export default function Routes() {
       <Route exact={true} path="/reservations/new">
         <NewReservation />
       </Route>
-      
+
       <Route exact={true} path="/reservations/:reservationId/seat">
         <Seat tables={tables} setTables={setTables} />
+      </Route>
+
+      <Route exact={true} path="/reservations/:reservationId/edit">
+        <EditReservation />
       </Route>
 
       <Route exact={true} path="/search">
@@ -48,13 +52,16 @@ export default function Routes() {
       </Route>
 
       <Route path="/dashboard">
-        <Dashboard tables={tables} setTables={setTables} date={date ? date : today()} />
+        <Dashboard
+          tables={tables}
+          setTables={setTables}
+          date={date ? date : today()}
+        />
       </Route>
 
       <Route>
         <NotFound />
       </Route>
-
     </Switch>
   );
 }

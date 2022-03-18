@@ -1,4 +1,5 @@
 import React from "react";
+import { Container, Form, Col, Row, Button } from 'react-bootstrap'
 
 export default function ReservationForm({
   first_name,
@@ -11,93 +12,129 @@ export default function ReservationForm({
   submit,
   cancel,
 }) {
+  
+// ---------------------------------------------------- Return
   return (
-    <form onSubmit={submit}>
-      <div className="form-group">
-        First Name:
-        <input
-          type="text"
-          className=""
-          id="first_name"
-          name="first_name"
-          onChange={change}
-          value={first_name}
-          required
-        />
-      </div>
+    <Container fluid>
+      <Form onSubmit={submit}>
+        <Row>
+          <Col xs={4}>
+            <Form.Group>
+              First Name:
+              <br />
+              <input
+                style={{width:"100%"}}
+                type="text"
+                className=""
+                id="first_name"
+                name="first_name"
+                onChange={change}
+                value={first_name}
+                required
+              />
+            </Form.Group>
+          </Col>
 
-      <div className="form-group">
-        Last Name:
-        <input
-          type="text"
-          className=""
-          id="last_name"
-          name="last_name"
-          onChange={change}
-          value={last_name}
-        />
-      </div>
+          <Col xs={4}>
+            <Form.Group>
+              Last Name:
+              <br />
+              <input
+                style={{width:"100%"}}
+                type="text"
+                className=""
+                id="last_name"
+                name="last_name"
+                onChange={change}
+                value={last_name}
+              />
+            </Form.Group>
+          </Col>
 
-      <div className="form-group">
-        Mobile Number:
-        <input
-          type="text"
-          className=""
-          id="mobile_number"
-          name="mobile_number"
-          onChange={change}
-          maxLength="10"
-          value={mobile_number}
-          required
-        />
-      </div>
+          <Col xs={4}>
+            <Form.Group>
+              Mobile Number:
+              <br />
+              <input 
+                style={{width:"100%"}}
+                type="text"
+                className=""
+                id="mobile_number"
+                name="mobile_number"
+                onChange={change}
+                maxLength="10"
+                value={mobile_number}
+                required
+              />
+            </Form.Group>
+          </Col>
+        </Row>
+        <Row>
+          <Col xs={4}>
+            <Form.Group>
+              Reservation Date:
+              <br />
+              <input
+                style={{width:"100%"}}
+                type="date"
+                className=""
+                id="reservation_date"
+                name="reservation_date"
+                onChange={change}
+                value={reservation_date}
+                required
+              />
+            </Form.Group>
+          </Col>
 
-      <div className="form-group">
-        Reservation Date:
-        <input
-          type="date"
-          className=""
-          id="reservation_date"
-          name="reservation_date"
-          onChange={change}
-          value={reservation_date}
-          required
-        />
-      </div>
+          <Col xs={4}>
+            <Form.Group>
+              Reservation Time:
+              <br />
+              <input
+                style={{width:"100%"}}
+                type="time"
+                className=""
+                id="reservation_time"
+                name="reservation_time"
+                onChange={change}
+                value={reservation_time}
+                required
+              />
+            </Form.Group>
+          </Col>
 
-      <div className="form-group">
-        Reservation Time:
-        <input
-          type="time"
-          className=""
-          id="reservation_time"
-          name="reservation_time"
-          onChange={change}
-          value={reservation_time}
-          required
-        />
-      </div>
-
-      <div className="form-group">
-        Party Size:
-        <input
-          type="number"
-          className=""
-          id="people"
-          name="people"
-          onChange={change}
-          value={people}
-          min="1"
-          required
-        />
-      </div>
-
-      <button type="submit" className="btn btn-primary">
-        Submit
-      </button>
-      <button className="btn btn-primary" name="cancel" onClick={cancel}>
-        Cancel
-      </button>
-    </form>
+          <Col xs={4}>
+            <Form.Group>
+              Party Size:
+              <br />
+              <input
+                style={{width:"100%"}}
+                type="number"
+                className=""
+                id="people"
+                name="people"
+                onChange={change}
+                value={people}
+                min="1"
+                required
+              />
+            </Form.Group>
+            <br/>
+          </Col>
+        </Row>
+        
+        <Row>
+          <Col xs={12}>
+            <Button type="submit" className="btn btn-primary">
+              Submit
+            </Button>
+            <Button className="btn btn-primary" name="cancel" onClick={cancel}>
+              Cancel
+            </Button>
+          </Col>
+        </Row>
+      </Form>
+    </Container>
   );
 }

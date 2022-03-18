@@ -49,12 +49,6 @@ function seat(table_id,reservation_id){
   }
 }
 
-// function updateStatus(reservation_id, status){
-//   return knex("reservations")
-//     .where({ reservation_id })
-//     .update({ status })
-// }
-
 module.exports = {
   create,
   readReservation,
