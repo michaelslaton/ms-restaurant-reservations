@@ -13,14 +13,14 @@ function listSpecificDate(reservation_date){
   return knex(database)
   .select("*")
   .where({ reservation_date })
-  .whereNotIn("status", ["finished", "canceled"])
+  .whereNotIn("status", ["finished", "cancelled"])
   .orderBy("reservation_time")
 }
 
 function list(){
   return knex(database)
   .select("*")
-  .whereNotIn("status", ["finished", "canceled"])
+  .whereNotIn("status", ["finished", "cancelled"])
   .orderBy("reservation_time")
 }
 
