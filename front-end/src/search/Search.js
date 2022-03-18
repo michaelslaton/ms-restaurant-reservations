@@ -1,6 +1,7 @@
 import { React, useState, useEffect } from 'react';
 import { findByMobileNumber } from '../utils/api'
 import ReservationsList from "../reservations/ReservationsList"
+import ErrorAlert from "../layout/ErrorAlert";
 import { Container, Button, Row, Col, Form, InputGroup } from 'react-bootstrap';
 
 export default function Search(){
@@ -8,28 +9,29 @@ export default function Search(){
   const [formData,setFormData] = useState('');
   const [foundNumbers, setFoundNumbers] = useState([])
 
-  useEffect(()=>{
-    setFoundNumbers([]);
-  },[])
+// ---------------------------------------------------- Load
+  useEffect(()=>{setFoundNumbers([])},[]);
 
+// ---------------------------------------------------- Change
   function handleChange({ target }) {
     setFormData(target.value);
-    console.log(formData)
   }
 
+// ---------------------------------------------------- Submit
   function submitHandler(event){
     event.preventDefault();
     const abortController = new AbortController();
-    console.log(formData)
+    
     findByMobileNumber(formData, abortController.signal)
     .then((response)=> response.length ? setFoundNumbers(response) : setFoundNumbers(["No reservations found"]))
     .catch((error)=> setReservationsError(error));
     return () => abortController.abort();
   }
 
+// ---------------------------------------------------- Return
   return (
     <Container fluid>
-      {/* <ErrorAlert error={reservationsError} /> */}
+      <ErrorAlert error={reservationsError} />
       <Row>
         <Col>
           <h1>Search Reservations</h1>

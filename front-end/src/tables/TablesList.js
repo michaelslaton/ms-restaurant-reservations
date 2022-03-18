@@ -1,28 +1,37 @@
 import React, { useEffect } from "react";
-import { listTables, finishTable, changeReservationStatus } from "../utils/api";
+import { listTables, finishTable } from "../utils/api";
 import { Table, Button } from "react-bootstrap";
 
-export default function TablesList({ setReservationsError, tables, setTables, loadDashboard }) {
+export default function TablesList({
+  setReservationsError,
+  tables,
+  setTables,
+  load,
+}) {
 
+  // ---------------------------------------------------- Load
   useEffect(loadData, [setReservationsError, setTables]);
-  
+
   function loadData() {
     const abortController = new AbortController();
     listTables(abortController.signal)
-      .then((response)=> setTables(response))
-      .catch((error)=> setReservationsError(error));
+      .then((response) => setTables(response))
+      .catch((error) => setReservationsError(error));
     return () => abortController.abort();
   }
 
-  async function handleFinish(tableId, reservationId) {
+// ---------------------------------------------------- Finish
+  async function finishHandler(tableId) {
     const abortController = new AbortController();
-    if (window.confirm("Is this table ready to seat new guests? This cannot be undone.")) {
-
+    if (
+      window.confirm(
+        "Is this table ready to seat new guests? This cannot be undone."
+      )
+    ) {
       try {
         await finishTable(tableId, abortController.signal);
-        // await changeReservationStatus(reservationId,{ data: { status: "finished" } }, abortController.signal)
         loadData();
-        loadDashboard();
+        load();
       } catch (error) {
         setReservationsError(error);
       }
@@ -33,8 +42,9 @@ export default function TablesList({ setReservationsError, tables, setTables, lo
     return;
   }
 
+// ---------------------------------------------------- Return
   return (
-    <Table>
+    <Table responsive striped size="sm">
       <thead>
         <tr>
           <th>#</th>
@@ -45,6 +55,7 @@ export default function TablesList({ setReservationsError, tables, setTables, lo
         </tr>
       </thead>
       <tbody>
+        
         {tables.map((table, index) => {
           return (
             <tr key={table.table_id}>
@@ -56,10 +67,7 @@ export default function TablesList({ setReservationsError, tables, setTables, lo
               </td>
               <td>
                 {table.reservation_id !== null && (
-                  <Button
-                    data-table-id-finish={table.table_id}
-                    onClick={() => handleFinish(table.table_id, table.reservation_id)}
-                    size="sm">
+                  <Button data-table-id-finish={table.table_id} onClick={() =>finishHandler(table.table_id, table.reservation_id)} size="sm">
                     Finish
                   </Button>
                 )}
@@ -67,6 +75,7 @@ export default function TablesList({ setReservationsError, tables, setTables, lo
             </tr>
           );
         })}
+
       </tbody>
     </Table>
   );

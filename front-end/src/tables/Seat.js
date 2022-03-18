@@ -19,6 +19,7 @@ export default function Seat({ tables ,setTables }){
   const url = process.env.REACT_APP_API_BASE_URL;
   const history = useHistory();
 
+// ---------------------------------------------------- Load
   useEffect(loadData, [reservationId, setTables, url]);
 
   function loadData() {
@@ -33,7 +34,8 @@ export default function Seat({ tables ,setTables }){
     return () => abortController.abort();
   }
 
-  async function handleSubmit(event){
+// ---------------------------------------------------- Submit
+  async function submitHandler(event){
     event.preventDefault();
     const abortController = new AbortController();
     try {
@@ -45,6 +47,7 @@ export default function Seat({ tables ,setTables }){
     return () => abortController.abort();
   }
 
+// ---------------------------------------------------- Change
   function changeHandler({ target }) {
     setFormData({
       ...formData,
@@ -53,6 +56,7 @@ export default function Seat({ tables ,setTables }){
     });
   }
 
+// ---------------------------------------------------- Return
   return (
     <Container fluid>
       <Row>
@@ -65,7 +69,7 @@ export default function Seat({ tables ,setTables }){
       </Col>
       </Row>
       <Row>
-        <form onSubmit={handleSubmit}>
+        <form onSubmit={submitHandler}>
         <label htmlFor="table_id">Seat at:</label>
         <select name="table_id" onChange={changeHandler}>
           <option value>Select Table</option>

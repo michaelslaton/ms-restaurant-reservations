@@ -14,15 +14,16 @@ async function validateId(req,res,next){
       message: `Table ${tableId} not found.`,
     })
   }
+  res.locals.tableId = tableId;
   res.locals.foundTable = foundTable;
   next();
 }
 
 // ----------------------------------------------------------------- Status Validation
 
-async function validateSeating(req,res,next){
+async function isNotSeated(req,res,next){
   const foundTable = res.locals.foundTable;
-  const body = res.locals.bodyData;
+  const body = res.locals.data;
   const foundReservation = res.locals.foundReservation;
 
   if(foundReservation.status === "seated"){
@@ -38,38 +39,40 @@ async function validateSeating(req,res,next){
 
 async function validateCapacity(req, res, next){
   const tableId = req.params.tableId
-  const body = req.body.data;
+  const body = res.locals.data;
   const foundReservation = await service.readReservation(body.reservation_id);
   const foundTable = await service.readTable(tableId);
 
-  if(!foundReservation){
+  if(!foundReservation){ // If the reservation exists
     return next({
       status: 404,
       message: `Reservation ${body.reservation_id} does not exist.`,
     })
   }
 
-  if(foundTable.reservation_id !== null){
+  if(foundTable.reservation_id !== null){ // If the table is occupied
     return next({
       status: 400,
       message: `Table is occupied.`,
     })
   }
 
-  if(foundReservation.people > foundTable.capacity){
+  if(foundReservation.people > foundTable.capacity){ // If the table can fit the party size
     console.log("validation: error")
     return next({
       status: 400,
       message: `Party size is over table capacity.`,
     })
   }
+  res.locals.tableId = tableId;
+  res.locals.foundTable = foundTable;
   res.locals.foundReservation = foundReservation;
   next();
 }
 
-async function isOccupied(req,res,next){
-  const tableId = req.params.tableId
-  const foundTable = await service.readTable(tableId);
+async function isOccupied(req,res,next){ // If the table is Empty
+  const tableId = res.locals.tableId;
+  const foundTable = res.locals.foundTable;
   if(!foundTable.reservation_id){
     return next({
       status: 400,
@@ -109,13 +112,13 @@ function validateFields(fields) {
         });
       }
     });
-    res.locals.bodyData = data;
+    res.locals.data = data;
     next();
   };
 }
 
 function validateFieldLengths(req,res,next){
-  const data = req.body.data;
+  const data = res.locals.data;
 
   if(typeof data.capacity !== "number"){
     return next({
@@ -135,7 +138,7 @@ function validateFieldLengths(req,res,next){
 // ----------------------------------------------------------------- Functionality
 
 async function create(req,res){
-  const newTable = req.body.data;
+  const newTable = res.locals.data;
   const data = await service.create(newTable)
 
   return res.status(201).json({ data });
@@ -155,16 +158,16 @@ async function list(req, res) {
 }
 
 async function updateSeat(req, res) {
-  const body = req.body.data;
-  const tableId = req.params.tableId;
+  const body = res.locals.data;
+  const tableId = res.locals.tableId;
   const data = await service.seat(tableId,body.reservation_id);
   await updateStatus(body.reservation_id, "seated")
   return res.status(200).json({ data });
 }
 
 async function unSeat(req, res){
-  const tableId = req.params.tableId;
-  const foundTable = await service.readTable(tableId)
+  const tableId = res.locals.tableId;
+  const foundTable = res.locals.foundTable;
   await updateStatus(foundTable.reservation_id, "finished")
   await service.seat(tableId);
   return res.status(200).json({});
@@ -172,7 +175,7 @@ async function unSeat(req, res){
 
 module.exports = {
   list: [asyncErrorBoundary(list)],
-  update: [validateFields(requiredFieldsSeat), validateCapacity, validateSeating, asyncErrorBoundary(updateSeat)],
+  update: [validateFields(requiredFieldsSeat), validateCapacity, isNotSeated, asyncErrorBoundary(updateSeat)],
   create: [validateFields(requiredFieldsTable), validateFieldLengths, asyncErrorBoundary(create)],
   unSeat: [validateId, isOccupied, asyncErrorBoundary(unSeat)],
 }
