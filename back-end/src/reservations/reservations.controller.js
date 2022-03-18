@@ -52,6 +52,13 @@ async function validateId(req,res,next){
 
 // ----------------------------------------------------------------- Time Validation
 
+function currentDate() { // returns the current date in an array [00,00,00]
+  const date = new Date();
+  return [date.getFullYear(),
+  (date.getMonth() + 1),
+  date.getDate(),]
+}
+
 function currentTime() {
   const time = new Date();
   return [time.getHours(),
@@ -60,8 +67,11 @@ function currentTime() {
 
 function validateTime(req,res,next){
   const resTime = res.locals.data.reservation_time;
+  const resDate = res.locals.data.reservation_date
+  const todaysDate = currentDate();
   
   const theirTime = resTime.split(":").map((value)=>value = parseInt(value));
+  const theirDate = resDate.split("-").map((value)=>value = parseInt(value));
 
   const myTime = currentTime()
 
@@ -89,20 +99,15 @@ function validateTime(req,res,next){
     })
 }
 
-  if(theirTime[0] < myTime[0]) return next(pastErr)
-  if(theirTime[0] === myTime[0] && theirTime[1] < myTime[1]) return next(pastErr)
+  if(theirDate[0] === todaysDate[0] && theirDate[1] === todaysDate[1] && theirDate[2] === todaysDate[2] ){
+    if(theirTime[0] < myTime[0]) return next(pastErr)
+    if(theirTime[0] === myTime[0] && theirTime[1] < myTime[1]) return next(pastErr)
+  }
 
   next();
 }
 
 // ----------------------------------------------------------------- Date Validation
-
-function currentDate() { // returns the current date in an array [00,00,00]
-  const date = new Date();
-  return [date.getFullYear(),
-  (date.getMonth() + 1),
-  date.getDate(),]
-}
 
 function aDate(year,month,day){ // returns the value of the day integer value 0-6 of the week of an entered date
   const myDate = new Date();
