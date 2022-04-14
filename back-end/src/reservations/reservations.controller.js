@@ -81,10 +81,17 @@ function validateTime(req,res,next){
   }
 
   if(theirTime[0] <= 10){
-    if(theirTime[1] <= 30){ return next({
-      status: 400,
-      message: `No reservations can be made before we open at 10:30AM.`,
-    }) }
+    if(theirTime[0] === 10 && theirTime[1] < 30){
+      return next({
+        status: 400,
+        message: `No reservations can be made before we open at 10:30AM.`,
+      })
+    } else if (theirTime[0] < 10){
+      return next({
+        status: 400,
+        message: `No reservations can be made before we open at 10:30AM.`,
+      })
+    }
   }
 
   if(theirTime[0] > 21){
