@@ -3,8 +3,7 @@ import { useHistory } from "react-router-dom";
 import ErrorAlert from "../layout/ErrorAlert";
 import ReservationForm from "./ReservationForm";
 import { createReservation } from "../utils/api";
-import { Container } from 'react-bootstrap';
-// const url = process.env.REACT_APP_API_BASE_URL
+import { Container, Row, Col } from 'react-bootstrap';
 
 export default function NewReservation(){
   const history = useHistory();
@@ -51,20 +50,35 @@ export default function NewReservation(){
 
 // ---------------------------------------------------- Return
   return (
-    <Container fluid>
-      <h1>Create Reservation</h1>
-      <ErrorAlert error={reservationsError}/>
-      <ReservationForm
-      first_name={formData.first_name}
-      last_name={formData.last_name}
-      mobile_number={formData.mobile_number}
-      reservation_date={formData.reservation_date}
-      reservation_time={formData.reservation_time}
-      people={formData.people}
-      change={handleChange}
-      submit={handleSubmit}
-      cancel={handleCancel}
-      />
+    <Container fluid className="p-0">
+      <Row className="pageHead">
+        <Col className="p-0">
+          <div>
+          <h1>Create<br/>Reservation</h1>
+          </div>
+        </Col>
+      </Row>
+      <Row>
+        <Col className="display-container">
+          
+        <div className="display-center">
+          <ReservationForm
+            first_name={formData.first_name}
+            last_name={formData.last_name}
+            mobile_number={formData.mobile_number}
+            reservation_date={formData.reservation_date}
+            reservation_time={formData.reservation_time}
+            people={formData.people}
+            change={handleChange}
+            submit={handleSubmit}
+            cancel={handleCancel}
+          />
+          </div>
+        </Col>
+      </Row>
+      <Row className="d-flex justify-content-center">
+        <ErrorAlert error={reservationsError} />
+      </Row>
     </Container>
-  )
+  );
 }

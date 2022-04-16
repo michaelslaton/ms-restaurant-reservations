@@ -2,12 +2,6 @@ import React from "react";
 
 import { Link } from "react-router-dom";
 
-/**
- * Defines the menu for this application.
- *
- * @returns {JSX.Element}
- */
-
 function Menu() {
   return (
     <nav className="navbar navbar-dark align-items-start p-0">
@@ -17,7 +11,7 @@ function Menu() {
           to="/"
         >
           <div className="sidebar-brand-text mx-3">
-            <span>Periodic Tables</span>
+            <span>Reservations Manager</span>
           </div>
         </Link>
         <hr className="sidebar-divider my-0" />

@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react';
 import { useParams, useHistory } from 'react-router-dom'
 import ErrorAlert from "../layout/ErrorAlert";
 import ReservationForm from "./ReservationForm"
-import { Container } from 'react-bootstrap'
+import { Container, Row, Col } from 'react-bootstrap'
 import { readReservation, updateReservation } from "../utils/api"
 
 export default function EditReservation(){
@@ -71,20 +71,32 @@ export default function EditReservation(){
   }
 // ---------------------------------------------------- Return
   return (
-    <Container fluid>
-      <h1>{`Edit Reservation #${reservationId}`}</h1>
-      <ErrorAlert error={reservationsError}/>
-      <ReservationForm
-      first_name={formData.first_name}
-      last_name={formData.last_name}
-      mobile_number={formData.mobile_number}
-      reservation_date={formData.reservation_date}
-      reservation_time={formData.reservation_time}
-      people={formData.people}
-      change={handleChange}
-      submit={handleSubmit}
-      cancel={handleCancel}
-      />
+    <Container fluid className="p-0">
+      <Row className="pageHead">
+        <Col className="p-0">
+          <h1>{`Edit Reservation #${reservationId}`}</h1>
+        </Col>
+      </Row>
+      <Row>
+        <Col className="display-container">
+          <div className="display-center">
+          <ReservationForm
+            first_name={formData.first_name}
+            last_name={formData.last_name}
+            mobile_number={formData.mobile_number}
+            reservation_date={formData.reservation_date}
+            reservation_time={formData.reservation_time}
+            people={formData.people}
+            change={handleChange}
+            submit={handleSubmit}
+            cancel={handleCancel}
+          />
+          </div>
+        </Col>
+      </Row>
+      <Row className="d-flex justify-content-center">
+        <ErrorAlert error={reservationsError} />
+      </Row>
     </Container>
-  )
+  );
 }

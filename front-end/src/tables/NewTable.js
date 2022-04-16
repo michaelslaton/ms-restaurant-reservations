@@ -39,14 +39,20 @@ export default function NewTable() {
 
 // ---------------------------------------------------- Return
   return (
-    <Container fluid>
-      <ErrorAlert error={reservationsError} />
-      <Row>
+    <Container fluid className="p-0">
+
+      <Row className="pageHead">
         <Col xs={12}>
+          <div>
           <h1>Create Table</h1>
+          </div>
         </Col>
       </Row>
-      <Form onSubmit={handleSubmit}>
+      <Row>
+        <Col className="display-container">
+          
+        <div className="display-center">
+      <Form onSubmit={handleSubmit} className="mb-4 mt-4">
         <Row>
           <Col xs={6}>
             <Form.Group>
@@ -82,19 +88,25 @@ export default function NewTable() {
         </Row>
         
         <Row>
-          <Col xs={12}>
-            <Button type="submit" className="mr-2">
+          <Col xs={12} className="d-flex justify-content-end mt-2">
+            <button type="submit" className="form-button mr-2">
               <span className="oi oi-check"></span> Submit
-            </Button>
-            <Button
-              variant="secondary"
+            </button>
+            <button
+              className="form-button"
               name="cancel"
               onClick={() => history.goBack()}>
               <span className="oi oi-x"></span> Cancel
-            </Button>
+            </button>
           </Col>
         </Row>
       </Form>
+      </div>
+      </Col>
+      </Row>
+      <Row className="d-flex justify-content-center">
+        <ErrorAlert error={reservationsError} />
+      </Row>
     </Container>
   );
 }
