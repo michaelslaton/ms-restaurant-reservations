@@ -1,6 +1,6 @@
 import { React } from 'react';
 import { changeReservationStatus } from "../utils/api"
-import { Container, Table, Button } from 'react-bootstrap'
+import { Table, Button } from 'react-bootstrap'
 
 export default function ReservationsList({ data, load, setReservationsError }){
 
@@ -21,8 +21,8 @@ export default function ReservationsList({ data, load, setReservationsError }){
 
 // ---------------------------------------------------- Return
   return (
-    <Container fluid>
-      <Table responsive striped size="sm">
+    <div className="aTable">
+      <Table borderless responsive striped>
               <thead>
                 <tr>
                   <th>#</th>
@@ -49,11 +49,11 @@ export default function ReservationsList({ data, load, setReservationsError }){
                       <td data-reservation-id-status={reservation.reservation_id}>{reservation.status}</td>
                       <td>
                         {reservation.status === "booked" && (
-                          <>
-                            <a className="btn btn-primary" href={`/reservations/${reservation.reservation_id}/seat`} size="sm">Seat</a>
-                            <a className="btn btn-primary" href={`/reservations/${reservation.reservation_id}/edit`} size="sm">Edit</a>
-                            <Button variant="danger" onClick={()=> cancelHandler(reservation.reservation_id)} data-reservation-id-cancel={reservation.reservation_id}>Cancel</Button>
-                          </>
+                          <div className="d-flex justify-content-end">
+                            <a className="table-button" href={`/reservations/${reservation.reservation_id}/seat`} size="sm">Seat</a>
+                            <a className="table-button" href={`/reservations/${reservation.reservation_id}/edit`} size="sm">Edit</a>
+                            <button className="table-button" onClick={()=> cancelHandler(reservation.reservation_id)} data-reservation-id-cancel={reservation.reservation_id}>Cancel</button>
+                          </div>
                         )}
                       </td>
                     </tr>
@@ -62,6 +62,6 @@ export default function ReservationsList({ data, load, setReservationsError }){
                 })}
               </tbody>
             </Table>
-    </Container>
+            </div>
   )
 }

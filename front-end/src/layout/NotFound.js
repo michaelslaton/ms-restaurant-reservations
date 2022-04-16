@@ -1,16 +1,12 @@
 import React from "react";
+import { Container, Row, Col } from "react-bootstrap";
 
-/**
- * Defines the "Not Found" page that is displayed for any unmatched route.
- *
- * You will not need to make changes to this file.
- *
- * @returns {JSX.Element}
- */
 function NotFound() {
   return (
-    <div className="NotFound">
-      <h1>Not Found</h1>
+    <div className="notFoundContainer">
+      <div className="notFound">
+        <h1>Not Found :(</h1>
+      </div>
     </div>
   );
 }

@@ -5,7 +5,8 @@ import ErrorAlert from "../layout/ErrorAlert";
 import ReservationsList from "../reservations/ReservationsList"
 import { useHistory } from "react-router-dom";
 import { previous, next, today } from "../utils/date-time";
-import { Container, Button, Row, Col } from "react-bootstrap";
+import { Container, Row, Col } from "react-bootstrap";
+import * as AiIcons from 'react-icons/ai'
 
 function Dashboard({ date, tables, setTables }) {
   const [reservations, setReservations] = useState([]);
@@ -35,32 +36,64 @@ function Dashboard({ date, tables, setTables }) {
 
 // ---------------------------------------------------- Return
   return (
-      <Container fluid>        
-        <Row>
-
-          <Col>
+    <Container fluid className="p-0">
+      <Row className="pageHead">
+        <Col>
+          <div>
             <h1>Dashboard</h1>
-            <div className="d-md-flex mb-3">
-              <h4 className="mb-0">Reservations for {date}</h4>
+            <h4>Reservations for {date}</h4>
+          </div>
+          <ErrorAlert error={reservationsError} />
+        </Col>
+      </Row>
+      <Row>
+        <Col className="display-container">
+          <div className="display-center">
+            <div className="dashboard-controls">
+              <button
+                className="dashboard-button"
+                name="previous"
+                onClick={clickHandler}
+              >
+                <span className="oi oi-chevron-left"></span> Previous
+              </button>
+              <button
+                className="dashboard-button"
+                name="today"
+                onClick={clickHandler}
+              >
+                Today
+              </button>
+              <button
+                className="dashboard-button"
+                name="next"
+                onClick={clickHandler}
+              >
+                Next <span className="oi oi-chevron-right"></span>
+              </button>
             </div>
 
-            <div>
-              <Button className="mx-1" name="previous" onClick={clickHandler}>Previous</Button>
-              <Button className="mx-1" name="today" onClick={clickHandler}>Today</Button>
-              <Button className="mx-1" name="next" onClick={clickHandler}>Next</Button>
+            <div className="my-3">
+              <ReservationsList
+                data={reservations}
+                load={loadDashboard}
+                setReservationsError={setReservationsError}
+              />
             </div>
 
-            <ErrorAlert error={reservationsError} />
-            <ReservationsList data={reservations} load={loadDashboard} setReservationsError={setReservationsError}/>
-          </Col>
-
-          <Col>
-          <TablesList tables={tables} setTables={setTables} setReservationsError={setReservationsError} load={loadDashboard}/>
-          </Col>
-
-        </Row>
-      </Container>
-  )
+            <div className="my-4">
+              <TablesList
+                tables={tables}
+                setTables={setTables}
+                setReservationsError={setReservationsError}
+                load={loadDashboard}
+              />
+            </div>
+          </div>
+        </Col>
+      </Row>
+    </Container>
+  );
 }
 
 export default Dashboard;

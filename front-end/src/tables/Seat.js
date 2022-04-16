@@ -1,17 +1,16 @@
 import React, { useEffect, useState } from "react";
 import { readReservation, listTables, seatReservation } from "../utils/api";
-import TablesList from "./TablesList"
+import TablesList from "./TablesList";
 import ErrorAlert from "../layout/ErrorAlert";
 import { useParams, useHistory } from "react-router-dom";
-import { Container, Button, Row, Col } from "react-bootstrap";
+import { Container, Form, Button, Row, Col } from "react-bootstrap";
 
-export default function Seat({ tables ,setTables }){
-
+export default function Seat({ tables, setTables }) {
   const initialFormState = {
     reservation_id: "",
     table_id: "",
   };
-  
+
   const [formData, setFormData] = useState({ ...initialFormState });
   const [reservation, setReservation] = useState({});
   const [reservationsError, setReservationsError] = useState(null);
@@ -19,35 +18,42 @@ export default function Seat({ tables ,setTables }){
   const url = process.env.REACT_APP_API_BASE_URL;
   const history = useHistory();
 
-// ---------------------------------------------------- Load
+  // ---------------------------------------------------- Load
   useEffect(loadData, [reservationId, setTables, url]);
 
   function loadData() {
     const abortController = new AbortController();
     setReservationsError(null);
+
     readReservation(reservationId, abortController.signal)
-      .then((response)=>setReservation(response))
+      .then((response) => setReservation(response))
       .catch(setReservationsError);
+
     listTables(abortController.signal)
-    .then((response)=> setTables(response))
-    .catch((error)=> setReservationsError(error));
+      .then((response) => setTables(response))
+      .catch((error) => setReservationsError(error));
+
     return () => abortController.abort();
   }
 
-// ---------------------------------------------------- Submit
-  async function submitHandler(event){
+  // ---------------------------------------------------- Submit
+  async function submitHandler(event) {
     event.preventDefault();
     const abortController = new AbortController();
     try {
-      await seatReservation(formData.table_id,{ data: { reservation_id: reservation.reservation_id } }, abortController.signal);
-      history.push(`/dashboard`)
+      await seatReservation(
+        formData.table_id,
+        { data: { reservation_id: reservation.reservation_id } },
+        abortController.signal
+      );
+      history.push(`/dashboard`);
     } catch (error) {
-      setReservationsError(error)
+      setReservationsError(error);
     }
     return () => abortController.abort();
   }
 
-// ---------------------------------------------------- Change
+  // ---------------------------------------------------- Change
   function changeHandler({ target }) {
     setFormData({
       ...formData,
@@ -56,33 +62,58 @@ export default function Seat({ tables ,setTables }){
     });
   }
 
-// ---------------------------------------------------- Return
+  // ---------------------------------------------------- Return
   return (
-    <Container fluid>
-      <Row>
+    <Container fluid className="p-0">
+      <Row className="pageHead">
         <Col>
-      <h1>Seat Reservation</h1>
-      <div className="d-md-flex mb-3">
-        <h4 className="mb-0">#{reservation.reservation_id} - {reservation.first_name} {reservation.last_name} on {reservation.reservation_date} at {reservation.reservation_time} for {reservation.people}</h4>
-      </div>
-      <ErrorAlert error={reservationsError} />
-      </Col>
+          <h1>Seat Reservation</h1>
+          <div>
+            <h4>
+              #{reservation.reservation_id} - {reservation.first_name}{" "}
+              {reservation.last_name} on {reservation.reservation_date} at{" "}
+              {reservation.reservation_time} for {reservation.people}
+            </h4>
+          </div>
+        </Col>
       </Row>
       <Row>
-        <form onSubmit={submitHandler}>
-        <label htmlFor="table_id">Seat at:</label>
-        <select name="table_id" onChange={changeHandler}>
-          <option value>Select Table</option>
-          {tables.map((table)=>{
-            return ( <option key={table.table_id} value={table.table_id}>{table.table_name} - {table.capacity}</option> )
-          })}
-        </select>
-        <Button type="Submit" size="sm">Submit</Button>
-        <Button size="sm" onClick={() => history.goBack()}>Cancel</Button>
-      </form>
-      </Row>
-      <Row>
-      <TablesList tables={tables} setTables={setTables} setReservationsError={setReservationsError} />
+        <Col className="display-container">
+          <div className="display-center">
+          <Row className="my-3">
+            <Form onSubmit={submitHandler}>
+              <Form.Group className="mb-2">
+                Seat at:
+                <select name="table_id" onChange={changeHandler}>
+                  <option value>Select Table</option>
+                  {tables.map((table) => {
+                    return (
+                      <option key={table.table_id} value={table.table_id}>
+                        {table.table_name} - {table.capacity}
+                      </option>
+                    );
+                  })}
+                </select>
+                <br />
+                <div className="d-flex justify-content-end">
+                  <button className="form-button mt-3 mr-2" type="Submit">Submit</button>
+                  <button className="form-button mt-3 mr-2" onClick={() => history.goBack()}>Cancel</button>
+                </div>
+              </Form.Group>
+            </Form>
+          </Row>
+          <Row className="my-3">
+            <TablesList
+              tables={tables}
+              setTables={setTables}
+              setReservationsError={setReservationsError}
+            />
+          </Row>
+          <Row className="d-flex justify-content-center">
+            <ErrorAlert error={reservationsError} />
+          </Row>
+          </div>
+        </Col>
       </Row>
     </Container>
   );

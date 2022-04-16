@@ -1,5 +1,5 @@
 import React from "react";
-import { Container, Form, Col, Row, Button } from 'react-bootstrap'
+import { Container, Form, Col, Row } from 'react-bootstrap'
 
 export default function ReservationForm({
   first_name,
@@ -15,15 +15,14 @@ export default function ReservationForm({
   
 // ---------------------------------------------------- Return
   return (
-    <Container fluid>
+    <Container fluid className="p-0">
       <Form onSubmit={submit}>
         <Row>
-          <Col xs={4}>
-            <Form.Group>
+          <Col xs={6}>
+            <Form.Group className="mb-2">
               First Name:
               <br />
               <input
-                style={{width:"100%"}}
                 type="text"
                 className=""
                 id="first_name"
@@ -35,12 +34,11 @@ export default function ReservationForm({
             </Form.Group>
           </Col>
 
-          <Col xs={4}>
-            <Form.Group>
+          <Col xs={6}>
+            <Form.Group className="mb-2">
               Last Name:
               <br />
               <input
-                style={{width:"100%"}}
                 type="text"
                 className=""
                 id="last_name"
@@ -51,12 +49,14 @@ export default function ReservationForm({
             </Form.Group>
           </Col>
 
-          <Col xs={4}>
-            <Form.Group>
+          </Row>
+          <Row>
+
+          <Col xs={6}>
+            <Form.Group className="my-2">
               Mobile Number:
               <br />
               <input 
-                style={{width:"100%"}}
                 type="text"
                 className=""
                 id="mobile_number"
@@ -68,14 +68,13 @@ export default function ReservationForm({
               />
             </Form.Group>
           </Col>
-        </Row>
-        <Row>
-          <Col xs={4}>
-            <Form.Group>
+
+
+          <Col xs={6}>
+            <Form.Group className="my-2">
               Reservation Date:
               <br />
               <input
-                style={{width:"100%"}}
                 type="date"
                 className=""
                 id="reservation_date"
@@ -87,12 +86,14 @@ export default function ReservationForm({
             </Form.Group>
           </Col>
 
-          <Col xs={4}>
-            <Form.Group>
+</Row>
+<Row>
+
+          <Col xs={6}>
+            <Form.Group className="mt-2">
               Reservation Time:
               <br />
               <input
-                style={{width:"100%"}}
                 type="time"
                 className=""
                 id="reservation_time"
@@ -104,12 +105,11 @@ export default function ReservationForm({
             </Form.Group>
           </Col>
 
-          <Col xs={4}>
-            <Form.Group>
+          <Col xs={6}>
+            <Form.Group className="mt-2">
               Party Size:
               <br />
               <input
-                style={{width:"100%"}}
                 type="number"
                 className=""
                 id="people"
@@ -122,16 +122,17 @@ export default function ReservationForm({
             </Form.Group>
             <br/>
           </Col>
+
         </Row>
-        
         <Row>
-          <Col xs={12}>
-            <Button type="submit" className="btn btn-primary">
-              Submit
-            </Button>
-            <Button className="btn btn-primary" name="cancel" onClick={cancel}>
-              Cancel
-            </Button>
+
+          <Col xs={12} className="d-flex justify-content-end mt-2">
+            <button type="submit" className="form-button mr-2">
+              <span className="oi oi-check"></span> Submit
+            </button>
+            <button className="form-button" name="cancel" onClick={cancel}>
+              <span className="oi oi-x"></span> Cancel
+            </button>
           </Col>
         </Row>
       </Form>

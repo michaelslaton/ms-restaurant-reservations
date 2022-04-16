@@ -44,7 +44,8 @@ export default function TablesList({
 
 // ---------------------------------------------------- Return
   return (
-    <Table responsive striped size="sm">
+    <div className="aTable">
+    <Table borderless striped size="sm">
       <thead>
         <tr>
           <th>#</th>
@@ -78,5 +79,6 @@ export default function TablesList({
 
       </tbody>
     </Table>
+    </div>
   );
 }

@@ -1,4 +1,379 @@
+
+body {
+  margin: 0px;
+  padding: 0px;
+  background-image: url(https://background-tiles.com/overview/blue/patterns/large/1061.png);
+  background-repeat: repeat;
+  background-attachment: fixed;
+}
+
+input, select {
+  width: 100%;
+  outline:0;
+}
+
+.pageHead {
+  font-family: 'JelleeBold';
+  background-image: linear-gradient(to right, #425AB1,#6177C8,#6177C8,#6177C8,#6177C8,#6177C8,#6177C8,#425AB1);
+  background-color: #6177C8;
+  text-align: center;
+  color: white;
+  border-bottom: 2px solid black;
+}
+
 .side-bar {
-  background-color: #393a44;
-  min-width: 200px;
+  float: left;
+  min-width: 100%;
+  max-width: 100%;
+}
+
+.display-container {
+  height: 90vh;
+}
+
+.display-center {
+  margin: 0;
+  position: relative;
+  top: 5%;
+}
+
+/* ---------------------------------------------------------------- Not Found Page */
+
+.notFoundContainer {
+  height: 50vh;
+  text-align: center;
+}
+
+.notFound {
+  -webkit-text-stroke: 2px black;
+  text-align: center;
+  color: white;
+  margin: 0;
+  position: relative;
+  top: 50%;
+  transform: translateY(-50%);
+}
+
+/* ---------------------------------------------------------------- Nav */
+
+.menu-bars, .menu-bars:hover, .menu-bars:active, .menu-bars:visited, .menu-bars:link, .menu-bars:focus {
+  border: 0;
+  background: none;
+  outline: none;
+  padding: 0;
+  text-decoration: none;
+  font-size: 2rem;
+  display: flex;
+  color: white;
+}
+
+.nav-button, a.nav-button:link, a.nav-button:hover, a.nav-button:visited, a.nav-button:active {
+  display: block;
+  background-color: #B53D6D;
+  color: white;
+  font-size: 25px;
+  text-align: center;
+  text-decoration: none;
+  border-top: solid 2px #44001B;
+  border-bottom: solid 2px #44001B;
+  width: 100%;
+  padding: 15px;
+  margin: 0;
+  transition: 300ms;
+}
+
+a.nav-button:hover, a.nav-button:active {
+  transition: 500ms;
+  -webkit-text-stroke: 1px white;
+  font-size: 26px;
+  background-color: #D26390;
+  border-top: solid 3px #9B2152;
+  border-bottom: solid 3px #9B2152;
+  transition: 500ms;
+}
+
+h1.nav-title {
+  font-family: 'JelleeBold';
+  text-align: center;
+  color: white;
+}
+
+.nav-menu {
+  background-color: #69082F;
+  width: 100%;
+  height: 100vh;
+  position: fixed;
+  top: -100%;
+  transition: 300ms;
+  z-index: 10000;
+}
+
+.nav-menu.active {
+  top: 0;
+  transition: 200ms;
+  border-bottom: 5px solid #44001B;
+}
+
+.menu-icon {
+  color: white;
+  position: fixed;
+  z-index: 4;
+}
+
+/* ---------------------------------------------------------------- Dashboard */
+
+.dashboard-controls {
+  text-align: center;
+}
+
+button.dashboard-button {
+  font-family: 'JelleeBold';
+  font-size: 15px;
+  border: 0;
+  outline:0;
+  margin: 0 2.9px 0;
+  background: #6177C8;
+  position: relative;
+  padding: 7px 25px;
+  color: white;
+  border-radius: 7px;
+  box-shadow: 0 0.2em 0 0 #29429E;
+  transition: 300ms;
+}
+
+/* ---------------------------------------------------------------- form */
+
+form {
+  outline: solid 1px black;
+  background-color: white;
+  margin: 2% auto;
+  border: solid 1px #6177C8;
+  border-top: solid 20px #6177C8;
+  border-bottom: solid 20px #6177C8;
+  border-radius: 7px;
+  padding: 10px;
+  align-items: center;
+}
+
+button.form-button {
+  font-family: 'JelleeBold';
+  font-size: 20px;
+  border: 0;
+  outline:0;
+  background: #6177C8;
+  position: relative;
+  padding: 4px 15px;
+  color: white;
+  border-radius: 7px;
+  box-shadow: 0 0.2em 0 0 #29429E;
+  transition: 300ms;
+}
+
+button.form-button:hover, button.dashboard-button:hover, a.table-button:hover {
+  background: #8799DD;
+  box-shadow: 0 0.2em 0 0 #6177C8;
+  transition: 500ms;
+}
+
+/* ---------------------------------------------------------------- Tables */
+
+.aTable {
+  margin: auto;
+  outline: solid 1px black;
+  border: solid 1px #6177C8;
+  border-radius: 7px;
+  overflow-y: hidden;
+  background-color: #6177C8;
+  align-items: center;
+}
+
+table {
+  width: 100%;
+}
+
+thead tr {
+  background-color: #6177C8;
+  border-radius: 10px;
+  color: white;
+}
+
+tBody {
+  background-color: white;
+}
+
+tBody td thead {
+  text-align: center;
+}
+
+a.table-button {
+  border: 0;
+  outline:0;
+  font-family: 'JelleeBold';
+  font-size: 15px;
+  text-decoration: none;
+  margin: 0 2.9px 0;
+  padding: 7px 25px;
+  border-radius: 7px;
+  color: white;
+  background: #6177C8;
+  box-shadow: 0 0.2em 0 0 #29429E;
+  transition: 300ms;
+}
+
+button.table-button {
+  border: 0;
+  outline:0;
+  font-family: 'JelleeBold';
+  font-size: 15px;
+  text-decoration: none;
+  margin: 0 2.9 0;
+  padding: 5px 16px;
+  border-radius: 7px;
+  color: white;
+  background: #B53D6D;
+  box-shadow: 0 0.2em 0 0 #9B2152;
+  transition: 300ms;
+}
+
+button.table-button:hover {
+  background: #D26390;
+  box-shadow: 0 0.2em 0 0 #7B0B38;
+  transition: 500ms;
+}
+
+/* ---------------------------------------------------------------- Animated Bg */
+
+@-webkit-keyframes bg-scrolling-reverse {
+  100% { background-position: 858px 954px; }
+}
+
+@-moz-keyframes bg-scrolling-reverse {
+  100% { background-position: 858px 954px; }
+}
+
+@-o-keyframes bg-scrolling-reverse {
+  100% { background-position: 858px 954px; }
+}
+
+@keyframes bg-scrolling-reverse {
+  100% { background-position: 858px 954px; }
+}
+
+/* animation styles */
+body {
+  /* img size is 50x50 */
+  background: url("https://i.imgur.com/8pl3NTg.png") repeat 0 0;
+  background-size: 75%;
+  -webkit-animation: bg-scrolling-reverse 55s infinite;
+  /* Safari 4+ */
+  -moz-animation: bg-scrolling-reverse 55s infinite;
+  /* Fx 5+ */
+  -o-animation: bg-scrolling-reverse 55s infinite;
+  /* Opera 12+ */
+  animation: bg-scrolling-reverse 55s infinite;
+  /* IE 10+ */
+  -webkit-animation-timing-function: linear;
+  -moz-animation-timing-function: linear;
+  -o-animation-timing-function: linear;
+  animation-timing-function: linear;
+}
+
+/* ---------------------------------------------------------------- */
+/* ---------------------------------------------------------------- Desktop */
+/* ---------------------------------------------------------------- */
+
+@media (min-width: 481px){
+
+  .aTable {
+    width: 60%;
+  }
+
+  .side-bar {
+    float: left;
+  }
+
+  /* ---------------------------------------------------------------- Animated Bg */
+
+  @-webkit-keyframes bg-scrolling-reverse {
+    100% { background-position: 1144px 1272px; }
+  }
+
+  @-moz-keyframes bg-scrolling-reverse {
+    100% { background-position: 1144px 1272px; }
+  }
+
+  @-o-keyframes bg-scrolling-reverse {
+    100% { background-position: 1144px 1272px; }
+  }
+
+  @keyframes bg-scrolling-reverse {
+    100% { background-position: 1144px 1272px; }
+  }
+
+  /* animation styles */
+  body {
+    /* img size is 50x50 */
+    background: url("https://i.imgur.com/8pl3NTg.png") repeat 0 0;
+    -webkit-animation: bg-scrolling-reverse 55s infinite;
+    /* Safari 4+ */
+    -moz-animation: bg-scrolling-reverse 55s infinite;
+    /* Fx 5+ */
+    -o-animation: bg-scrolling-reverse 55s infinite;
+    /* Opera 12+ */
+    animation: bg-scrolling-reverse 55s infinite;
+    /* IE 10+ */
+    -webkit-animation-timing-function: linear;
+    -moz-animation-timing-function: linear;
+    -o-animation-timing-function: linear;
+    animation-timing-function: linear;
+  }
+
+
+/* ---------------------------------------------------------------- Nav Menu */
+
+  .nav-menu {
+    width: 300px;
+    left: -100%;
+    top:0;
+  }
+
+  .nav-menu.active {
+    left: 0;
+    top:0;
+    border: 0;
+    border-right: 2px solid #44001B;
+  }
+
+  .menu-bars, .menu-bars:hover, .menu-bars:active, .menu-bars:visited, .menu-bars:link, .menu-bars:focus  {
+    font-size: 3rem;
+  }
+
+  
+/* ---------------------------------------------------------------- Dashboard */
+
+  button.dashboard-button {
+    font-size: 20px;
+    border: 0;
+    outline: solid 1px black;
+    margin: 10px 2% 1%;
+    background: #6177C8;
+    position: relative;
+    padding: 7px 25px;
+    color: white;
+    border-radius: 7px;
+    box-shadow: 0 0.2em 0 0 #29429E;
+  }
+
+/* ---------------------------------------------------------------- General */
+
+
+
+.display-center {
+  top: 10%;
+}
+
+  form {
+    width: 60%;
+  }
+
 }
