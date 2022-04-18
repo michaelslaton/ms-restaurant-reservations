@@ -175,6 +175,11 @@ button.form-button:hover, button.dashboard-button:hover, a.table-button:hover {
   transition: 500ms;
 }
 
+button.dashboard-button:hover {
+  box-shadow: 0 2px 0 #6177C8;
+  transform: translateY(3px);
+}
+
 /* ---------------------------------------------------------------- Tables */
 
 .aTable {
