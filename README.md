@@ -1,5 +1,6 @@
 # Resteraunt Reservations System
-A *retro* styled resteraunt reservations and seeting management system. 
+*[Live Demo](https://ms-finalcap-frontend.herokuapp.com/dashboard)*
+A *retro* styled resteraunt reservations and seeting management system.
 
 This system will allow you to:
 *Create new reservations
