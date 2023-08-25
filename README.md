@@ -10,8 +10,7 @@ This system will allow you to: <br>
 * Seat reservations as they arrive <br>
 * Finish their reservation as they leave the reservation <br>
 <br>
-### Links<br>
-**Live Deployment:** [Live Demo](https://ms-finalcap-frontend.herokuapp.com/dashboard)
+**Live Deployment: ** [Live Demo](https://ms-finalcap-frontend.herokuapp.com/dashboard) <br>
 <br>
 ### Front-End Technologies<br>
 * React<br>
