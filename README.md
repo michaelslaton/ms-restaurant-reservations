@@ -2,7 +2,7 @@
 ### Summary  
 My final capstone for graduation from Thinkful's Software Engineering Immersion program. A *retro* styled resteraunt reservations and seeting management system.  
   
-This system will allow you to:  
+**This system will allow you to:**  
 * Create new reservations  
 * Edit or cancel Reservations  
 * Search reservations by their phone number  
