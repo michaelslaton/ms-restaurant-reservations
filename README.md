@@ -10,9 +10,6 @@ My final capstone for graduation from Thinkful's Software Engineering Immersion 
 * Seat reservations as they arrive  
 * Finish their reservation as they leave the reservation  
   
-### Links  
-**Live Deployment:** [Live Demo](https://ms-finalcap-frontend.herokuapp.com/dashboard)  
-  
 ### Front-End Technologies  
 * React  
 * React-Bootstrap  
